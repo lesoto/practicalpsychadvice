@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Charisma Self-Assessment</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      p {
+        margin-bottom: 10px;
+      }
+
+      .section {
+        margin-bottom: 20px;
+      }
+
+      .section h2 {
+        margin-bottom: 10px;
+      }
+
+      li {
+        margin-bottom: 5px;
+      }
+
+      .question {
+        margin-bottom: 10px;
+      }
+
+      #result {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Questionnaire for Self-Assessment of Charisma</h1>
+    <div id="questions"></div>
+    <button onclick="calculateScore()">Calculate Score</button>
+    <div id="result"></div>
+    <script>
+      const questions = ["I maintain eye contact with my interlocutor during conversation.", "I have good posture, facial expressions, and body language.", "I radiate optimism and positivity.", "I believe in my abilities.", "I feel comfortable being the center of attention.", "I can express my thoughts and ideas clearly and concisely.", "I am not afraid to defend my point of view.", "I speak clearly, distinctly, and loud enough to be heard and understood.", "I ask relevant questions to deepen the conversation.", "I explain complex topics or ideas and summarize key points.", "I use images, metaphors, and stories to express my ideas.", "I can easily start a conversation with a stranger.", "I know how to listen attentively and ask questions.", "I can easily find common ground with people.", "I adapt my speech to different audiences.", "I tell stories to inspire others.", "I know how to inspire people to achieve goals.", "People trust me and my opinion.", "I can motivate people to take action.", "I know how to persuade people of my point of view.", "I know how to bring conflicting parties to an agreement and opponents to a compromise.", "I listen attentively when others speak.", "I express genuine interest in people.", "I pick up on non-verbal signals and gestures.", "I can communicate with people on an emotional level.", "I can recognize other people's feelings.", "I can understand another person's point of view.", "I strive to be sensitive and attentive to others.", "I behave consistently in different situations.", "I can admit mistakes and take responsibility.", "I openly talk about my goals and plans.", "My words match my actions.", "My behavior is consistent with my personality.", "I am not afraid to be myself.", "People trust me."];
+      const questionContainer = document.getElementById("questions");
+      const resultContainer = document.getElementById("result");
+
+      function createQuestionElements() {
+        questions.forEach((question, index) => {
+          const questionDiv = document.createElement("div");
+          questionDiv.classList.add("question");
+          const questionText = document.createElement("p");
+          questionText.textContent = `${index + 1}. ${question}`;
+          const ratingContainer = document.createElement("div");
+          for (let i = 1; i <= 3; i++) {
+            const ratingLabel = document.createElement("label");
+            const ratingInput = document.createElement("input");
+            ratingInput.type = "radio";
+            ratingInput.name = `question-${index}`;
+            ratingInput.value = i;
+            ratingLabel.textContent = i;
+            ratingContainer.appendChild(ratingInput);
+            ratingContainer.appendChild(ratingLabel);
+          }
+          questionDiv.appendChild(questionText);
+          questionDiv.appendChild(ratingContainer);
+          questionContainer.appendChild(questionDiv);
+        });
+      }
+
+      function calculateScore() {
+        let totalScore = 0;
+        const radioInputs = document.querySelectorAll('input[type="radio"]:checked');
+        radioInputs.forEach((input) => {
+          totalScore += parseInt(input.value);
+        });
+        const maxScore = questions.length * 3;
+        const percentage = (totalScore / maxScore) * 100;
+        let result;
+        if (percentage >= 80) {
+          result = "You have a highly charismatic personality!";
+        } else if (percentage >= 60) {
+          result = "You have a moderately charismatic personality.";
+        } else {
+          result = "You could work on developing your charismatic qualities.";
+        }
+        resultContainer.textContent = `Your score: ${totalScore} out of ${maxScore} (${percentage.toFixed(2)}%)\n${result}`;
+      }
+      createQuestionElements();
+    </script>
+  </body>
+</html>
