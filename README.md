@@ -1,52 +1,216 @@
 # practicalpsychadvice.com
 
-##  Practical Psychological Advice Website
+## Practical Psychology Advice - Official 10-Book Series Store
 
-This repository contains the code for the "Practical Psychological Tips" website, which offers insights, products, and services focused on practical psychology and self-improvement. The website is built with HTML, CSS, and TailwindCSS, and includes sections for key takeaways, products, testimonials, pricing, and more.
+The official website and store for the "Practical Psychology" series by Andy Horowitz. This is a Next.js application featuring the complete 10-book catalog with integrated Stripe payment processing for seamless book purchases.
 
 ### Features
 
-Responsive Design: Built using TailwindCSS for mobile and desktop responsiveness.
-Navigation: Easy-to-use navigation bar with multiple sections including Home, About, Products, and Contact.
-Dynamic Content: JavaScript for user interaction, such as form submission and dark mode toggle.
-Hotjar Integration: Hotjar tracking code included for user behavior analysis.
-Self-Assessment Tool: A built-in charisma self-assessment questionnaire with results calculation.
+- ✅ **10-Book Series Catalog** - Complete showcase of all books with individual product pages
+- ✅ **Stripe Payment Integration** - Secure checkout and payment processing
+- ✅ **Responsive Design** - Mobile-first design using TailwindCSS
+- ✅ **Order Management** - Webhook handling for payment events
+- ✅ **Production-Ready** - Configured for Vercel deployment
+- ✅ **TypeScript** - Full type safety for API routes and components
+- ✅ **Multiple Book Retailers** - Direct links to Apple Books, Kobo, and other platforms
+
+### Tech Stack
+
+- **Framework:** Next.js 14+ (App Router)
+- **Language:** TypeScript
+- **Styling:** TailwindCSS
+- **Payment:** Stripe API
+- **Deployment:** Vercel
+- **Database-Ready:** Hooks for order fulfillment (implement as needed)
 
 ### File Structure
 
-/css
-  └── tailwind.min.css       # TailwindCSS file
-  └── stylesheet.css         # Custom styles
-/images                      # Images for the website
-index.html                   # Main HTML file
-README.md                    # This README file
-
-###Technologies Used
-HTML5
-TailwindCSS: For styling and responsive design.
-FontAwesome: Icons for UI enhancements.
-JavaScript: For interactive elements, such as the self-assessment tool and dark mode toggle.
-Google Fonts: Poppins font integration for modern typography.
-Hotjar: Integrated for tracking user engagement.
+```
+.
+├── app/
+│   ├── api/
+│   │   ├── checkout/route.ts          # Stripe checkout session creation
+│   │   └── webhooks/stripe/route.ts   # Webhook event handler
+│   ├── checkout/
+│   │   ├── success/page.tsx           # Post-payment success page
+│   │   └── cancel/page.tsx            # Payment cancellation page
+│   └── layout.tsx                     # Root layout
+├── components/
+│   └── CheckoutButton.tsx             # Reusable checkout button
+├── lib/
+│   └── stripe.ts                      # Stripe utility functions
+├── public/images/                     # All book cover images
+├── .env.local                         # Environment secrets (git-ignored)
+├── .env.local.example                 # Template for environment variables
+├── package.json                       # Dependencies
+├── next.config.js                     # Next.js configuration
+├── tsconfig.json                      # TypeScript configuration
+├── index.html                         # Static landing page (legacy)
+├── STRIPE_SETUP.md                    # Complete setup guide
+├── STRIPE_QUICK_START.md              # Quick start guide
+└── INTEGRATION_GUIDE.md               # Integration documentation
+```
 
 ### Prerequisites
 
-Modern browser (Google Chrome, Firefox, Safari)
-Web server (optional, but recommended for testing)
+- **Node.js 18+** - Required for Next.js development
+- **npm or yarn** - Package manager
+- **Stripe Account** - Create free at https://stripe.com
+- **Git** - For version control
+
+### Quick Start
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Configure environment variables:**
+   ```bash
+   # .env.local is already configured with test keys
+   # For production, update with live Stripe keys
+   ```
+
+3. **Run development server:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Open in browser:**
+   Navigate to http://localhost:3000
+
+5. **Test Stripe checkout:**
+   - Click any book's buy button
+   - Use test card: `4242 4242 4242 4242`
+   - Expiry: Any future date
+   - CVC: Any 3-digit number
 
 ### Key Sections
 
-Products: Displays the different psychological books available for purchase, including price and format options.
-Charisma Self-Assessment: A JavaScript-driven questionnaire that allows users to evaluate their charisma.
-Testimonials: Feedback from readers and clients.
-Pricing: Shows pricing for books in different formats with links for purchase.
-Contact Form: A simple form for users to submit inquiries or feedback.
-Newsletter Signup: Section for users to subscribe for updates.
+- **Series Overview** - Introduction to the 10-book Practical Psychology series
+- **Book Catalog** - Complete listing with covers, descriptions, and retailer links
+- **Key Insights** - Core themes across all books (Mindful Living, Decision-Making, etc.)
+- **Features & Benefits** - What readers can expect from the series
+- **Reader Testimonials** - Reviews from educators, social workers, and entrepreneurs
+- **FAQ** - Answers to common questions about books and purchase process
+- **Newsletter Signup** - Subscribe for psychology tips and series updates
 
-### Customization
-Dark Mode Toggle: Users can toggle between light and dark modes, with their preferences stored locally.
-Self-Assessment Questions: Modify the questions in the JavaScript section of index.html.
+### Payment Integration
 
+#### Stripe API Endpoints
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+**POST /api/checkout**
+Creates a Stripe checkout session and returns the checkout URL.
+
+Request body:
+```json
+{
+  "priceId": "price_1234567890",
+  "bookTitle": "The Secrets of Charisma",
+  "quantity": 1
+}
+```
+
+**POST /api/webhooks/stripe**
+Handles Stripe webhook events for:
+- `checkout.session.completed` - Order fulfillment
+- `charge.refunded` - Refund processing
+- `customer.subscription.updated` - Subscription management
+
+#### Environment Variables
+
+Required for operation:
+```env
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+```
+
+⚠️ **Never commit `.env.local` to Git** - it's protected by `.gitignore`
+
+### Deployment
+
+#### Local Development
+
+```bash
+npm run dev
+```
+
+Server runs at http://localhost:3000
+
+#### Production Deployment (Vercel)
+
+```bash
+git push origin main
+```
+
+1. Connect repository to Vercel (https://vercel.com)
+2. Add environment variables in Vercel dashboard
+3. Redeploy with production Stripe keys
+
+#### Webhook Configuration for Production
+
+1. Deploy to Vercel to get production URL
+2. In Stripe Dashboard: Developers → Webhooks → Add Endpoint
+3. Endpoint URL: `https://your-app.vercel.app/api/webhooks/stripe`
+4. Select events: `checkout.session.completed`
+5. Copy signing secret and update Vercel environment variables
+6. Redeploy
+
+### Testing
+
+#### Stripe Test Cards
+
+- **Success:** `4242 4242 4242 4242`
+- **Authentication Required:** `4000 0025 0000 3155`
+- **Declined:** `4000 0000 0000 0002`
+
+Full list: https://stripe.com/docs/testing
+
+#### Local Webhook Testing
+
+With Stripe CLI installed:
+```bash
+stripe listen --forward-to localhost:3000/api/webhooks/stripe
+```
+
+### Documentation
+
+- **[STRIPE_QUICK_START.md](./STRIPE_QUICK_START.md)** - 5-minute setup guide
+- **[STRIPE_SETUP.md](./STRIPE_SETUP.md)** - Comprehensive setup and deployment
+- **[INTEGRATION_GUIDE.md](./INTEGRATION_GUIDE.md)** - Integration options and implementation
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run lint` - Run ESLint
+
+### Image Assets
+
+All book cover images are located in `/images`:
+- `book-1-charisma.png`
+- `book-2-motivation.png`
+- `book-3-self-awareness.png`
+- `book-4-social-skills.png`
+- `book-5-nonverbal.png`
+- `book-6-emotional-intelligence.png`
+- `book-7-changing-behavior.png`
+- `book-8-stress-emotions.png`
+- `book-9-relationships.png`
+- `book-10-communication.png`
+- Plus supporting graphics and author photos
+
+### Project Status
+
+✅ **Complete:** Stripe payment integration, API routes, webhook handling, documentation  
+✅ **Deployed:** Ready for local testing and production deployment  
+⏳ **Next Steps:** Create Stripe products, integrate checkout buttons, configure webhooks
+
+### Support
+
+For setup issues, refer to:
+- [STRIPE_SETUP.md](./STRIPE_SETUP.md) - Full setup guide with troubleshooting
+- [Stripe Documentation](https://stripe.com/docs)
+- [Next.js Documentation](https://nextjs.org/docs)
