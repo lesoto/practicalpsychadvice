@@ -1,6 +1,6 @@
-# practicalpsychologyadvice.com
+# practicalpsychadvice.com
 
-##  Practical Psychological Tips Website
+##  Practical Psychological Advice Website
 
 This repository contains the code for the "Practical Psychological Tips" website, which offers insights, products, and services focused on practical psychology and self-improvement. The website is built with HTML, CSS, and TailwindCSS, and includes sections for key takeaways, products, testimonials, pricing, and more.
 
